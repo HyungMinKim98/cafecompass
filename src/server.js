@@ -1,19 +1,25 @@
 import express from 'express';
 import { MongoClient, ServerApiVersion } from 'mongodb';
+import mongoose from 'mongoose';
+import ReviewModel from './models/ReviewModel';
+import CafeModel from './models/CafeModel';
+import UserModel from './models/UserModel';
+import bcrypt from 'bcrypt';
+import 'dotenv/config';
+
 
 const app = express();
 const port = process.env.PORT || 3001; // Different from React's 3000
 
-const uri = "mongodb+srv://tigerabc0622:5a7F6rW5aIg7jxEG@coffeecompassdb.vkovhu1.mongodb.net/?retryWrites=true&w=majority&appName=coffeecompassDB";
+const mongoDBUri = process.env.MONGO_DB_URI;
 
 const client = new MongoClient(uri, {
   serverApi: ServerApiVersion.v1
 });
-const express = require('express');
-const mongoose = require('mongoose');
+
 
 // Replace 'yourMongoDBUriHere' with your actual MongoDB URI
-const mongoDBUri = 'mongodb://atlas-sql-66016e4ea6e5e617306ffc75-xeiaa.a.query.mongodb.net/myVirtualDatabase?ssl=true&authSource=admin';
+
 app.use(express.json()); // This line is necessary for your server to accept JSON in POST requests
 
 mongoose.connect(mongoDBUri, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -35,9 +41,6 @@ async function run() {
 
 run().catch(console.dir);
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
 
 app.get('/api/cafes', async (req, res) => {
   try {
